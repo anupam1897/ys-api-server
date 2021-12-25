@@ -1,0 +1,36 @@
+{
+  "name": "api-auth-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon api-resource-server.js",
+    "start2": "nodemon authServer.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anupam1897/ys-api.git"
+  },
+  "keywords": [
+    "api",
+    "authentication",
+    "jwt",
+    "access",
+    "refresh",
+    "token"
+  ],
+  "author": "Anupam Chauhan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anupam1897/ys-api/issues"
+  },
+  "homepage": "https://github.com/anupam1897/ys-api#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "randomstring": "^1.2.1"
+  }
+}
