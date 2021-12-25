@@ -1,5 +1,5 @@
 const {create} = require('./user.service');
-const {genSaltSync, hashSync} = require('bcrypt');
+const {genSaltSync, hashSync} = require('bcryptjs');
 
 module.exports = {
     createUser: (req, res) => {
