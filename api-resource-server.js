@@ -5,13 +5,14 @@ const app = express();
 const userRouter = require('./users/user.router');
 
 app.use(express.json());
-// app.get('/api', (req, res) => {
-//     res.json({
-//         success: 1,
-//         message: 'working api'
-//     })
 
-// })
+app.get('/api', (req, res) => {
+    res.json({
+        success: 1,
+        message: 'working api'
+    })
+
+})
 
 app.use('/api/users', userRouter);
 
