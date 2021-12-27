@@ -18,7 +18,7 @@ app.use('/api/users', userRouter);
 
 
 
-app.listen(process.env.API_SERVER_PORT, () => {
+app.listen(process.env.PORT || process.env.API_SERVER_PORT, () => {
     console.log(`server up and running at port: ${process.env.API_SERVER_PORT}`);
 })
 
