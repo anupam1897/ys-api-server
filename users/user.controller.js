@@ -6,7 +6,8 @@ module.exports = {
         const body = req.body;
         body.password = hashSync(body.password, genSaltSync(10));
         create(body, (err, results) => {
-            if (err){ 
+            if (err)
+            { 
                 console.log(err);
                 return res.status(500).json({ 
                     success: 0,
@@ -15,10 +16,14 @@ module.exports = {
                 
                 });
             }
-            return res.status(200).json({
-                success: 1,
-                data: results
-            });
+            
+            else {
+                res.status(200).json({
+                    success: 1,
+                    data: results
+                });
+            }
+            
         });
     }
 }
