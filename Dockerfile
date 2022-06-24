@@ -5,4 +5,4 @@ WORKDIR /app
 RUN npm install
 COPY . .
 EXPOSE 3000
-CMD node api-resource-server
+CMD node apiServer
