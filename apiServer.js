@@ -50,7 +50,7 @@ app.use('/api/inventory',  inventoryRouter);
 app.use('/api/sold_items', itemRouter);
 
 //-----------server------------//
-app.listen( process.env.API_SERVER_PORT, () => {
+app.listen(process.env.PORT ||  process.env.API_SERVER_PORT, () => {
     console.log(`server up and running at port: ${process.env.API_SERVER_PORT}`);
 })
 
