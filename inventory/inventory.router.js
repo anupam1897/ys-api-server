@@ -1,3 +1,5 @@
+
+
 const { createProduct , getProducts , updateProduct,deleteProduct, getProductByProductId, getProductInfo} = require("./inventory.controller") ;
 
 const router = require("express").Router();

@@ -43,11 +43,23 @@ app.get('/', (req, res) => {
 
 
 // app.use('/api/users',  userRouter);
-app.use('/api/store', storeRouter); //working properly
-app.use('/api/paymentDetails',  paymentDetails);
-app.use('/api/orders', cors(corsOptions), orderRouter);
-app.use('/api/inventory',  inventoryRouter);
-app.use('/api/sold_items', itemRouter);
+app.use('/api/store', authenticateToken, storeRouter); //working properly
+app.use('/api/paymentDetails', authenticateToken,  paymentDetails);
+app.use('/api/orders', authenticateToken, cors(corsOptions), orderRouter);
+app.use('/api/inventory', authenticateToken,  inventoryRouter);
+app.use('/api/sold_items', authenticateToken, itemRouter);
+
+//---------authenticate brearer token------------//
+function authenticateToken(req, res,  next) {
+    const authHeader = req.headers['authorization']
+    const token =  authHeader && authHeader.split(' ')[1]
+    if(token == null) return res.sendStatus(401)
+    jwt.verify(token, process.env.ACCESS_SECRET, (err, user) =>{
+
+        if(err) return res.sendStatus(403)
+        next()
+    })
+}
 
 //-----------server------------//
 app.listen(process.env.PORT ||  process.env.API_SERVER_PORT, () => {
