@@ -136,5 +136,19 @@ module.exports = {
             return callback(null, results[0]);
         })
     },
+    
+    checkIfProductExists: (data, callback)=>{
+        pool.query(`SELECT COUNT(*) count FROM inventory WHERE product_id = ? and store_id = ?;`,
+        [
+            data.product_id,
+            data.store_id
+        ], 
+        (err, results, fields) =>{
+            if(err) {
+                return callback(err);
+            }
+            return callback(null, results[0]);
+        })
+    }
 
 };

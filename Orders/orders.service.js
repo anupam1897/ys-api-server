@@ -48,7 +48,7 @@ module.exports = {
 
     orderDetails : (data, callBack) =>{
         pool.query(`SELECT store.shop_name, orders.order_id, orders.customer_mobile, orders.paid_amount, orders.payment_type, orders.created_at, super_product.product_name,
-        sold_items.selling_price, sold_items.units_sold , super_product.unit
+        sold_items.selling_price, sold_items.units_sold , super_product.unit, super_product.product_img
         FROM orders 
         JOIN store ON orders.store_id = store.store_id
         JOIN sold_items on orders.order_id = sold_items.order_id
@@ -67,9 +67,13 @@ module.exports = {
     },
 
     getItemsByOrderId: (data, callBack)=>{
-        pool.query(`SELECT super_product.product_name, super_product.product_id, super_product.description, super_product.mrp, super_product.category, super_product.unit, super_product.brand, sold_items.selling_price,sold_items.units_sold 
-        from sold_items JOIN super_product ON super_product.product_id = sold_items.product_id 
-        WHERE sold_items.order_id = ?`,
+        pool.query(`SELECT  orders.order_id, orders.customer_mobile, orders.paid_amount, orders.payment_type, orders.created_at, super_product.product_name,
+        sold_items.selling_price, sold_items.units_sold , super_product.unit, super_product.product_img
+        FROM orders 
+     
+        JOIN sold_items on orders.order_id = sold_items.order_id
+        JOIN super_product on sold_items.product_id = super_product.product_id
+        WHERE orders.order_id = ?`,
         [
             data.order_id
         ],

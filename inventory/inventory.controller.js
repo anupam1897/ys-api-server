@@ -1,4 +1,4 @@
-const { create,getProducts, updateProduct, deleteProduct, createInventory, getProductId, getProductInfo, getProductByProductId } = require("./inventory.service") ;
+const { create,getProducts,checkIfProductExists, updateProduct, deleteProduct, createInventory, getProductId, getProductInfo, getProductByProductId } = require("./inventory.service") ;
 
 module.exports = {
     createProduct : (req, res) =>{
@@ -15,21 +15,55 @@ module.exports = {
             if (results.length>0) {
                 
                  body.product_id = results[0].product_id;
-                createInventory(body, (err, results)=>{
+                
+                 checkIfProductExists(body, (err, results)=>{
                     if(err){
+                        
                         console.log(err);
-                        return res.status(500).json({
+                        return res.json({
                             success : 0,
-                            message : "Cannot Insert"
+                            message : "Can't get product id"
+                            });
+                    }else{
+                        if(results.count < 1 ){
+                            createInventory(body, (err, results)=>{       
+                            if(err){
+                                console.log(err);
+                                return res.status(500).json({
+                                    success : 0,
+                                    message : "Cannot Insert"
+                                });
+                            }return res.status(200).json({
+                                success : 1,
+                                data : results
+                            });
                         });
-                    } return res.status(200).json({
-                        success : 1,
-                        data : results
-                    });
-                });
-            }
+                        }else {
+                            updateProduct(body,(err,results) =>{
+                                if(err){
+                                    console.log(err);
+                                    return res.status(500).json({
+                                        success : 0,
+                                        message : "Invalid Id"
+                                    });
+                                }
+                                if(results.affectedRows == 0){
+                                    return res.json({
+                                        success:0,
+                                        message : "Invalid Product Id"
+                                    });
+                                }
+                                return res.status(200).json({
+                                    success : 1,
+                                    data : results
+                                });
+                            });
 
-            else{
+                            
+                        }
+                    }}
+                 )  
+            }else{
                 create(body, (err, results)=>{
                     if(err){
                         console.log(err);
