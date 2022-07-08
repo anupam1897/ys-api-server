@@ -3,7 +3,8 @@ const {
     getStore,
     updateStore,
     deleteStore,
-    updateStoreMobile: updateStoreMobile
+    updateStoreMobile: updateStoreMobile,
+    getStoreId
 } = require('./store.service');
 
 module.exports = {
@@ -34,6 +35,27 @@ module.exports = {
     getStore : (req, res) => {
         const body = req.body;
         getStore(body, (error, results) => {
+            if(error){
+                console.log(error);
+                return;
+            }
+            if(!results){
+                return res.status(200).json({
+                    success: 0,
+                    data: "not found"
+                });
+            }
+            return res.status(200).json({
+                success: 1,
+                data: results
+            });
+        });
+    },
+
+
+    getStoreId : (req, res) => {
+        const body = req.body;
+        getStoreId(body, (error, results) => {
             if(error){
                 console.log(error);
                 return;

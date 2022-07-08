@@ -48,7 +48,7 @@ module.exports = {
 
     orderDetails : (data, callBack) =>{
         pool.query(`SELECT store.shop_name, orders.order_id, orders.customer_mobile, orders.paid_amount, orders.payment_type, orders.created_at, super_product.product_name,
-        sold_items.selling_price, sold_items.units_sold , super_product.unit, super_product.product_img
+        sold_items.selling_price, sold_items.units_sold , super_product.unit, super_product.product_img, super_product.description, super_product.brand
         FROM orders 
         JOIN store ON orders.store_id = store.store_id
         JOIN sold_items on orders.order_id = sold_items.order_id

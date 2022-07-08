@@ -3,11 +3,10 @@ const pool = require('../database');
 module.exports = {
     //create Store : kyc //working properly
     createStore: (data, callback) =>{
-        pool.query(`INSERT into store ( user_id,address, mobile, shop_name) VALUES (?,?,?,?)`, 
+        pool.query(`INSERT into store ( user_id,address, shop_name) VALUES (?,?,?)`, 
         [
             data.user_id,
             data.address,
-            data.mobile,
             data.shop_name
         ],
         (err, results, fields) =>{
@@ -23,6 +22,20 @@ module.exports = {
         pool.query(`select * from store where store_id = ?`, 
         [
           data.store_id
+        ], 
+        (err, results, fields) =>{
+            if(err) {
+                return callback(err);
+            }
+            return callback(null, results);
+        })
+    },
+
+
+    getStoreId: (data,callback) => {
+        pool.query(`select store_id from store where user_id = ?`, 
+        [
+          data.user_id
         ], 
         (err, results, fields) =>{
             if(err) {
