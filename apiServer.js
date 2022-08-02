@@ -5,6 +5,8 @@ const express = require('express');
 const app = express();
 module.exports = app;
 const jwt = require('jsonwebtoken')
+const {customerOrders, getItemsByOrderId, orderDetails} = require("./Orders/orders.service") ;
+
 
 //routes ---------------------//
 const paymentDetails = require('./paymentDetails/paymentDetails.router');
@@ -16,6 +18,7 @@ const itemRouter = require('./sold_items/sold_items.router');
 var cors = require('cors')
 
 app.use(cors())
+app.use(require("body-parser").json())
 
 var corsOptions = {
     origin: '*',
@@ -46,6 +49,7 @@ app.get('/', (req, res) => {
 app.use('/api/store', authenticateToken, storeRouter); //working properly
 app.use('/api/paymentDetails', authenticateToken,  paymentDetails);
 app.use('/api/orders', authenticateToken, cors(corsOptions), orderRouter);
+
 app.use('/api/inventory', authenticateToken,  inventoryRouter);
 app.use('/api/sold_items', authenticateToken, itemRouter);
 
@@ -66,3 +70,62 @@ app.listen(process.env.PORT ||  process.env.API_SERVER_PORT, () => {
     console.log(`server up and running at port: ${process.env.API_SERVER_PORT}`);
 })
 
+app.post('/:mobile', (req,res)=>{
+    const customer_mobile = req.params.mobile.toString();
+    
+    
+    customerOrders(customer_mobile, (err, results)=>{
+        if(err){
+            console.log(err);
+            return res.status(500).json({ 
+                success: 0,
+                message: "Database Connection Error"
+            });
+        }
+        if(!results){
+            return res.json({
+                success:0,
+                message : "Nothing to show"
+            });
+        }
+
+        console.log(results);
+
+        if(results.length > 0){
+            
+        
+        var body = {};
+        body.order_id = results[0].order_id;
+        
+        getItemsByOrderId(body, (err, results)=>{
+            if(err){
+                console.log(err);
+                return res.status(500).json({ 
+                    success: 0,
+                    message: "Database Connection Error"
+                });
+            }
+            if(!results){
+                return res.json({
+                    success:0,
+                    message : "Nothing to show"
+                });
+            }
+            
+            return res.status(200).json({
+                success : 1,
+            
+                items: results
+                
+            });
+        }
+        )
+    }else{
+        res.status(200).json({
+            success: 1,
+            items : results
+        })
+    }
+
+    })
+});

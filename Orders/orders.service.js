@@ -66,6 +66,26 @@ module.exports = {
         );
     },
 
+    customerOrders: (customer_mobile, callBack)=>{
+        pool.query(`SELECT  orders.order_id, orders.customer_mobile, orders.paid_amount, orders.payment_type, orders.created_at, super_product.product_name,
+        sold_items.selling_price, sold_items.units_sold , super_product.unit, super_product.product_img
+        FROM orders 
+     
+        JOIN sold_items on orders.order_id = sold_items.order_id
+        JOIN super_product on sold_items.product_id = super_product.product_id
+        WHERE orders.customer_mobile = ? ORDER BY orders.order_id DESC LIMIT 1`,
+        [
+            customer_mobile
+        ],
+        (error, results, fields)=>{
+            if(error){
+                return callBack(error);
+
+            }
+            return callBack(null, results)
+        } );
+    },
+
     getItemsByOrderId: (data, callBack)=>{
         pool.query(`SELECT  orders.order_id, orders.customer_mobile, orders.paid_amount, orders.payment_type, orders.created_at, super_product.product_name,
         sold_items.selling_price, sold_items.units_sold , super_product.unit, super_product.product_img

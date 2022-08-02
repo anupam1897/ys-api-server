@@ -113,7 +113,7 @@ module.exports = {
     //get id, name and desc of the product for autofill
 
     getProductInfo:callback => {
-        pool.query(`select product_id, product_name, description from super_product`,
+        pool.query(`select product_id, product_name from super_product`,
          [],
          (err, results, fields) =>{
             if(err) {
