@@ -3,14 +3,15 @@ const pool = require("../database") ;
 module.exports = {
     create: (data, callBack) =>{
         pool.query(
-            `Insert into super_product( product_name, description, mrp, category, unit, brand) values(?,?,?,?,?,?)`,
+            `Insert into super_product( product_name, description, mrp, category, unit, brand, barcode) values(?,?,?,?,?,?,?)`,
             [
                 data.product_name,
                 data.description,
                 data.mrp,
                 data.category,
                 data.unit,
-                data.brand
+                data.brand,
+                data.barcode
             ],
             (error, results,fields) =>{
                 if(error){
@@ -125,9 +126,10 @@ module.exports = {
 
 
     getProductByProductId: (data, callback) => {
-        pool.query(`select product_name, description, mrp, category, unit, brand from super_product where product_id = ?`, 
+        pool.query(`select product_name, description, mrp, category, unit, brand from super_product where product_id = ? or barcode = ?`, 
         [
-            data.product_id
+            data.product_id,
+            data.barcode
         ], 
         (err, results, fields) =>{
             if(err) {
