@@ -42,7 +42,7 @@ module.exports = {
     },
     getProducts :(data, callBack) =>{
         pool.query(`select super_product.product_id,  super_product.product_name,  super_product.description,  super_product.mrp,  
-        super_product.category,  super_product.unit, super_product.brand, inventory.selling_price ,inventory.stock , super_product.product_img
+        super_product.category,  super_product.unit, super_product.brand, inventory.selling_price ,inventory.stock , super_product.product_img, super_product.barcode
         from inventory 
         JOIN super_product ON inventory.product_id = super_product.product_id 
         where inventory.store_id = ? order by inventory.updated_at DESC , inventory.created_at DESC`,
